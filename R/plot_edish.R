@@ -226,7 +226,11 @@ plot_edish_caption <- function(which, classified, axes, mark_potential) {
       ""
     }
     mark <- sprintf(
-      "Red open circles: biochemical potential Hy's Law (bilirubin %s %sx ULN on or within %s days after ALT/AST %s %sx ULN%s). Peak Hy's Law color/quadrant is not the same rule.",
+      paste0(
+        "Red open circles: biochemical potential Hy's Law (bilirubin %s %sx ULN ",
+        "on or within %s days after ALT/AST %s %sx ULN%s). Peak Hy's Law ",
+        "color/quadrant is not the same rule."
+      ),
       op, classified$bili_cut %||% 2, window_days, op, classified$alt_cut %||% 3, alp_note
     )
   }

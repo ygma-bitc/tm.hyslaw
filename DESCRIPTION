@@ -13,7 +13,7 @@ Description: Provides an open-source teal module and reusable builders for
     without depending on study-specific ADDILI datasets. Table and plot
     builders can be called without launching Shiny.
 License: MIT + file LICENSE
-URL: https://github.com/ygma-bitc/tm.hyslaw
+URL: https://github.com/ygma-bitc/tm.hyslaw, https://ygma-bitc.github.io/tm.hyslaw/
 BugReports: https://github.com/ygma-bitc/tm.hyslaw/issues
 Depends:
     R (>= 4.1)
@@ -31,8 +31,10 @@ Imports:
 Suggests:
     haven,
     knitr,
+    lintr,
     pharmaverseadam,
     pkgload,
+    pkgdown,
     random.cdisc.data,
     rmarkdown,
     teal.data (>= 0.5.0),
@@ -42,5 +44,5 @@ Config/testthat/edition: 3
 Encoding: UTF-8
 Language: en-US
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.3.2
+RoxygenNote: 8.0.0
 Config/roxygen2/version: 8.0.0

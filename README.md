@@ -1,5 +1,8 @@
 # tm.hyslaw
 
+[![R-CMD-check](https://github.com/ygma-bitc/tm.hyslaw/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/ygma-bitc/tm.hyslaw/actions/workflows/R-CMD-check.yaml)
+[![pkgdown](https://github.com/ygma-bitc/tm.hyslaw/actions/workflows/pkgdown.yaml/badge.svg)](https://github.com/ygma-bitc/tm.hyslaw/actions/workflows/pkgdown.yaml)
+
 Teal modules and reusable builders for **exploratory Hy's Law monitoring** from CDISC ADaM-style `ADSL` + `ADLB`.
 
 This is a review aid, not a submission TFL. It does not implement alternative-cause exclusion (pre-existing liver disease, obstruction, alcohol). Admiral [ADLBHY](https://pharmaverse.github.io/admiral/main/articles/hys_law.html) derives ADaM flags; [dv.edish](https://github.com/Boehringer-Ingelheim/dv.edish) and [hep-explorer](https://github.com/SafetyGraphics/hep-explorer) are interactive eDISH apps on other stacks. This package sits in between: **table/plot builders with no Shiny**, plus optional **teal** modules.
@@ -76,6 +79,19 @@ Public ADaM is for integration tests and the demo app only (exploratory; attribu
 3. `random.cdisc.data` when available as a Suggests fallback in other packages; this demo prefers synthetic if public data are missing
 
 [`pharmaverseadam::adlbhy`](https://pharmaverse.github.io/pharmaverseadam/reference/adlbhy.html) can be compared as an admiral-derived `HYSLAW` parameter. Counts are not required to match this package.
+
+## Development quality gates
+
+This repository is set up for the standard R package release loop:
+
+```r
+devtools::document()
+testthat::test_local()
+devtools::check(error_on = "never")
+pkgdown::build_site()
+```
+
+GitHub Actions runs `R CMD check` on Ubuntu with the current release of R for pushes to `main` and for pull requests into `main`. Suggested packages on CRAN are installed, so a missing Suggests dependency fails the check. A separate pkgdown workflow builds the reference site on pushes to `main` and on manual dispatch, then publishes it to the `gh-pages` branch. After the first successful run, set GitHub Pages to deploy from the `gh-pages` branch root (`https://ygma-bitc.github.io/tm.hyslaw/`). `.lintr` is for local use. Coverage is intentionally not a release gate for this early package.
 
 ## Related work
 

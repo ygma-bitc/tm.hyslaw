@@ -12,6 +12,7 @@ Provides an open-source teal module and reusable builders for exploratory Hy's L
 Useful links:
 \itemize{
   \item \url{https://github.com/ygma-bitc/tm.hyslaw}
+  \item \url{https://ygma-bitc.github.io/tm.hyslaw/}
   \item Report bugs at \url{https://github.com/ygma-bitc/tm.hyslaw/issues}
 }
 

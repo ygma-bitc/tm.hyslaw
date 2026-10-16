@@ -196,19 +196,37 @@ default_hyslaw_footnotes <- function(classified = NULL) {
   c(
     "Exploratory review table; not a submission TFL.",
     sprintf(
-      "Threshold operator is %s (FDA 2009 and many CSR shells use >; change classify_hyslaw(compare = \">\") to match).",
+      paste0(
+        "Threshold operator is %s (FDA 2009 and many CSR shells use >; ",
+        "change classify_hyslaw(compare = \">\") to match)."
+      ),
       op
     ),
-    "Peak eDISH / maximal abnormalities use each subject's on-treatment maximum ALT or AST / ULN versus maximum bilirubin / ULN. The two maxima are not required to occur on the same day. Baseline records (ABLFL = Y) are excluded from those maxima.",
+    paste0(
+      "Peak eDISH / maximal abnormalities use each subject's on-treatment maximum ALT or AST / ULN ",
+      "versus maximum bilirubin / ULN. The two maxima are not required to occur on the same day. ",
+      "Baseline records (ABLFL = Y) are excluded from those maxima."
+    ),
     sprintf(
-      "Biochemical concurrent Hy's Law: bilirubin %s %sx ULN on or after ALT/AST %s %sx ULN, within %s days. This is not the peak-quadrant count and is not a confirmed Hy's Law case.",
+      paste0(
+        "Biochemical concurrent Hy's Law: bilirubin %s %sx ULN on or after ALT/AST %s %sx ULN, ",
+        "within %s days. This is not the peak-quadrant count and is not a confirmed Hy's Law case."
+      ),
       op, bili_cut, op, alt_cut, window_days
     ),
     sprintf(
-      "Potential Hy's Law applies optional ALP %s %sx ULN exclusion in the same window (currently %s). Missing ALP is not imputed; subjects without ALP meeting the cut in the window are retained when exclusion is on.",
+      paste0(
+        "Potential Hy's Law applies optional ALP %s %sx ULN exclusion in the same window ",
+        "(currently %s). Missing ALP is not imputed; subjects without ALP meeting the cut ",
+        "in the window are retained when exclusion is on."
+      ),
       op, alp_cut, if (isTRUE(exclude_alp)) "on" else "off"
     ),
-    "R-ratio = (ALT/ULN)/(ALP/ULN) at the concurrent ALT date when both exist, otherwise peak ALT/ULN over peak ALP/ULN. Pattern: >=5 hepatocellular, >2 and <5 mixed, <=2 cholestatic.",
+    paste0(
+      "R-ratio = (ALT/ULN)/(ALP/ULN) at the concurrent ALT date when both exist, ",
+      "otherwise peak ALT/ULN over peak ALP/ULN. Pattern: >=5 hepatocellular, ",
+      ">2 and <5 mixed, <=2 cholestatic."
+    ),
     "Symptoms, alternative causes, and 'satisfies Hy's Law' are not assessed from ADLB."
   )
 }

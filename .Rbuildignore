@@ -3,6 +3,7 @@
 ^\.git$
 ^\.github$
 ^\.gitignore$
+^\.lintr$
 ^\.DS_Store$
 ^app\.R$
 ^data-raw$

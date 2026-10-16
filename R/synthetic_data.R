@@ -117,8 +117,8 @@ make_synthetic_hyslaw_data <- function(n_extra = 6L, seed = 20260829L) {
     )
     extra <- do.call(rbind, lapply(seq_along(extra_ids), function(i) {
       rbind(
-        panel(extra_ids[[i]], 0L, 0.6 + runif(1L, 0, 0.3), 0.6, 0.5, 0.8, "N"),
-        panel(extra_ids[[i]], 21L, 0.8 + runif(1L, 0, 0.5), 0.9, 0.7, 0.9)
+        panel(extra_ids[[i]], 0L, 0.6 + stats::runif(1L, 0, 0.3), 0.6, 0.5, 0.8, "N"),
+        panel(extra_ids[[i]], 21L, 0.8 + stats::runif(1L, 0, 0.5), 0.9, 0.7, 0.9)
       )
     }))
     extra_adsl <- data.frame(

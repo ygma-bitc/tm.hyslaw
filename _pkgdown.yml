@@ -1,0 +1,38 @@
+url: https://ygma-bitc.github.io/tm.hyslaw/
+destination: pkgdown
+
+template:
+  bootstrap: 5
+
+navbar:
+  structure:
+    left: [reference, news]
+    right: [github]
+
+reference:
+  - title: Data Preparation
+    contents:
+      - prep_hyslaw_data
+      - standardize_adsl
+      - standardize_adlb
+  - title: Classification Rules
+    contents:
+      - classify_hyslaw
+      - default_edish_quadrants
+      - default_cdish_quadrants
+      - default_hyslaw_footnotes
+  - title: Tables And Listings
+    contents:
+      - build_hyslaw_table
+      - build_liver_elevation_table
+      - hyslaw_listing
+  - title: Plots
+    contents:
+      - plot_edish
+  - title: Teal Modules
+    contents:
+      - tm_g_edish
+      - tm_t_hyslaw
+  - title: Synthetic Data
+    contents:
+      - make_synthetic_hyslaw_data

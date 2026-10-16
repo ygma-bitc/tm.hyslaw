@@ -1,5 +1,9 @@
 # tm.hyslaw 0.2.0
 
+* Added R CMD check and pkgdown GitHub Actions workflows for release-ready open-source development.
+* Added `_pkgdown.yml` reference grouping and a lightweight `.lintr` configuration.
+* README now includes CI/pkgdown badges and local quality-gate commands.
+* Fixed the R CMD check NOTE from unqualified `runif()` by using `stats::runif()`.
 * eDISH plot defaults to one panel colored by treatment, with quadrant names on the plot and red open circles for biochemical potential Hy's Law. Caption states that axis maxima need not be the same day.
 * Optional mDISH (`which = "mdish"`) and cholestatic ALP vs bilirubin screen (`which = "cholestatic"`). Faceting by group is opt-in.
 * Peak maxima use on-treatment records; baseline is kept for mDISH ratios.
