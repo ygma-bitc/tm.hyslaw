@@ -19,8 +19,8 @@ Useful links:
 
 ## Author
 
-**Maintainer**: Y.G. Ma <ygma@users.noreply.github.com>
+**Maintainer**: Y.G. Ma <ygma0292@gmail.com>
 
 Authors:
 
-- Y.G. Ma <ygma@users.noreply.github.com>
+- Y.G. Ma <ygma0292@gmail.com>
