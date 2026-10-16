@@ -15,5 +15,7 @@
 ^.*\.tar\.gz$
 ^\.Rcheck$
 ^revdep$
+^cran-comments\.md$
 ^Meta$
 ^doc$
+^CRAN-SUBMISSION$

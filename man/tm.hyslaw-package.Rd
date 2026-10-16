@@ -18,11 +18,11 @@ Useful links:
 
 }
 \author{
-\strong{Maintainer}: Y.G. Ma \email{ygma@users.noreply.github.com}
+\strong{Maintainer}: Y.G. Ma \email{ygma0292@gmail.com}
 
 Authors:
 \itemize{
-  \item Y.G. Ma \email{ygma@users.noreply.github.com}
+  \item Y.G. Ma \email{ygma0292@gmail.com}
 }
 
 }
