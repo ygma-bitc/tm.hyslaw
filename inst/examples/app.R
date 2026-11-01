@@ -15,6 +15,7 @@ suppressPackageStartupMessages({
   library(shiny)
   library(teal)
   library(teal.data)
+  library(teal.picks)
   library(tm.hyslaw)
 })
 
@@ -78,18 +79,15 @@ load_cdisc_pilot_xpt <- function() {
   list(ADSL = adsl, ADLB = adlb, source = "cdisc-pilot")
 }
 
-group_vars_from_adsl <- function(adsl) {
-  candidate_group_vars <- c(
-    "Actual Treatment" = "TRT01A",
-    "Country" = "COUNTRY",
-    "Race" = "RACE",
-    "Sex" = "SEX"
-  )
-  keep <- candidate_group_vars[candidate_group_vars %in% names(adsl)]
+column_variables <- function(adsl, choices, selected) {
+  keep <- intersect(choices, names(adsl))
   if (length(keep) == 0L) {
-    keep <- c("Actual Treatment" = "TRT01A")
+    keep <- choices[[1L]]
   }
-  keep
+  if (!selected %in% keep) {
+    selected <- keep[[1L]]
+  }
+  teal.picks::variables(choices = keep, selected = selected, multiple = FALSE)
 }
 
 synthetic <- make_synthetic_hyslaw_data(n_extra = 8L, seed = 20260829L)
@@ -121,13 +119,31 @@ modules_list <- list(
     label = "eDISH (synthetic)",
     adsl_name = "ADSL",
     adlb_name = "ADLB",
-    group_vars = group_vars_from_adsl(synthetic$ADSL)
+    arm_var = column_variables(
+      synthetic$ADSL,
+      choices = c("TRT01A", "COUNTRY", "RACE", "SEX"),
+      selected = "TRT01A"
+    ),
+    population_var = column_variables(
+      synthetic$ADSL,
+      choices = c("SAFFL", "ITTFL"),
+      selected = "SAFFL"
+    )
   ),
   tm_t_hyslaw(
     label = "Hy's Law table (synthetic)",
     adsl_name = "ADSL",
     adlb_name = "ADLB",
-    group_vars = group_vars_from_adsl(synthetic$ADSL)
+    arm_var = column_variables(
+      synthetic$ADSL,
+      choices = c("TRT01A", "COUNTRY", "RACE", "SEX"),
+      selected = "TRT01A"
+    ),
+    population_var = column_variables(
+      synthetic$ADSL,
+      choices = c("SAFFL", "ITTFL"),
+      selected = "SAFFL"
+    )
   )
 )
 
@@ -149,13 +165,31 @@ if (!is.null(open_data)) {
         label = sprintf("eDISH (%s)", open_label),
         adsl_name = "ADSL_OPEN",
         adlb_name = "ADLB_OPEN",
-        group_vars = group_vars_from_adsl(open_data$ADSL)
+        arm_var = column_variables(
+          open_data$ADSL,
+          choices = c("TRT01A", "COUNTRY", "RACE", "SEX"),
+          selected = "TRT01A"
+        ),
+        population_var = column_variables(
+          open_data$ADSL,
+          choices = c("SAFFL", "ITTFL"),
+          selected = "SAFFL"
+        )
       ),
       tm_t_hyslaw(
         label = sprintf("Hy's Law table (%s)", open_label),
         adsl_name = "ADSL_OPEN",
         adlb_name = "ADLB_OPEN",
-        group_vars = group_vars_from_adsl(open_data$ADSL)
+        arm_var = column_variables(
+          open_data$ADSL,
+          choices = c("TRT01A", "COUNTRY", "RACE", "SEX"),
+          selected = "TRT01A"
+        ),
+        population_var = column_variables(
+          open_data$ADSL,
+          choices = c("SAFFL", "ITTFL"),
+          selected = "SAFFL"
+        )
       )
     )
   )

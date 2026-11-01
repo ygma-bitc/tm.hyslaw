@@ -1,4 +1,5 @@
 # Convenience wrapper for local development.
+# The demo in inst/examples/app.R selects ADSL columns with teal.picks.
 # Usage from the repository root:
 #   shiny::runApp("app.R")
 

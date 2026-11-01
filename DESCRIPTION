@@ -21,12 +21,14 @@ Imports:
     checkmate (>= 2.1.0),
     dplyr (>= 1.0.5),
     ggplot2 (>= 3.4.0),
+    lifecycle (>= 1.0.0),
     rlang (>= 1.0.0),
     rtables (>= 0.6.0),
     shiny (>= 1.7.0),
     shinyjs (>= 2.0.0),
     shinyvalidate (>= 0.1.0),
-    teal (>= 0.15.0),
+    teal (>= 1.2.0),
+    teal.picks (>= 0.1.0),
     teal.widgets (>= 0.4.0)
 Suggests:
     haven,

@@ -16,6 +16,7 @@
 ^\.Rcheck$
 ^revdep$
 ^cran-comments\.md$
+^paper$
 ^Meta$
 ^doc$
 ^CRAN-SUBMISSION$

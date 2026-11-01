@@ -45,6 +45,14 @@ plot_edish(classified = classified, which = "cholestatic")
 hyslaw_listing(classified = classified)
 ```
 
+## Teal column selectors
+
+`tm_g_edish()` and `tm_t_hyslaw()` choose the treatment column and the population flag with `teal.picks::variables()` on ADSL. Both selectors are a single column (`multiple = FALSE`). Defaults are `TRT01A` and `SAFFL`. The control shows each column's label from the data.
+
+`population_value` stays `"Y"` and is not a selector. Window, threshold operator, plot type, color, facet, and the checkboxes are unchanged.
+
+A named character vector can still be passed as `group_vars` or `population_choices`. That form warns and is converted to `teal.picks::variables(choices, selected)`.
+
 ## What is calculated
 
 Always (subject-level):

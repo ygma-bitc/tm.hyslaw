@@ -1,5 +1,6 @@
 # tm.hyslaw 0.2.0
 
+* `tm_g_edish()` and `tm_t_hyslaw()` select the treatment column and the population flag with `teal.picks::variables()` on ADSL. Display names come from column labels. Named `group_vars` and `population_choices` vectors still run, with a deprecation warning, and are converted to `variables(choices, selected)`.
 * Added R CMD check and pkgdown GitHub Actions workflows for release-ready open-source development.
 * Added `_pkgdown.yml` reference grouping and a lightweight `.lintr` configuration.
 * README now includes CI/pkgdown badges and local quality-gate commands.

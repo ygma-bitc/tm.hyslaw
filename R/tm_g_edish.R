@@ -46,13 +46,9 @@ ui_g_edish <- function(id, ...) {
       ),
       encoding = shiny::tags$div(
         shiny::tags$label("Encodings", class = "text-primary"),
-        shiny::selectizeInput(
-          inputId = ns("arm_var"),
-          label = "Treatment / group variable",
-          choices = a$group_vars,
-          selected = unname(a$group_vars[[1L]]),
-          multiple = FALSE,
-          width = "100%"
+        shiny::tags$div(
+          shiny::tags$label("Treatment / group variable"),
+          teal.picks::picks_ui(ns("arm_var"), a$arm_var)
         ),
         shiny::tags$p(
           class = "help-block",
@@ -68,13 +64,9 @@ ui_g_edish <- function(id, ...) {
           ),
           selected = a$which
         ),
-        shiny::selectizeInput(
-          inputId = ns("population_var"),
-          label = "Population flag",
-          choices = a$population_choices,
-          selected = a$population_var,
-          multiple = FALSE,
-          width = "100%"
+        shiny::tags$div(
+          shiny::tags$label("Population flag"),
+          teal.picks::picks_ui(ns("population_var"), a$population_var)
         ),
         shiny::numericInput(
           inputId = ns("window_days"),
@@ -134,8 +126,8 @@ srv_g_edish <- function(id,
                         data,
                         adsl_name = "ADSL",
                         adlb_name = "ADLB",
-                        group_vars = c("Actual Treatment" = "TRT01A"),
-                        population_var = "SAFFL",
+                        arm_var,
+                        population_var,
                         population_value = "Y",
                         window_days = 14,
                         exclude_alp = TRUE,
@@ -149,12 +141,42 @@ srv_g_edish <- function(id,
   checkmate::assert_class(data, "reactive")
 
   shiny::moduleServer(id, function(input, output, session) {
+    selectors <- teal.picks::picks_srv(
+      id = "",
+      picks = list(arm_var = arm_var, population_var = population_var),
+      data = data
+    )
+
     iv_r <- shiny::reactive({
       iv <- shinyvalidate::InputValidator$new()
-      iv$add_rule("arm_var", ~ if (!nzchar(. %||% "")) "Select a treatment / group variable.")
-      iv$add_rule("window_days", ~ if (is.na(.) || . < 0) "Window must be a non-negative number.")
+      iv$add_rule("window_days", function(value) {
+        if (is.null(value)) {
+          return()
+        }
+        if (length(value) != 1L || is.na(value) || value < 0) {
+          "Window must be a non-negative number."
+        }
+      })
       iv$enable()
       iv
+    })
+
+    arm_name_r <- shiny::reactive({
+      selected <- selected_column_name(selectors$arm_var())
+      shiny::validate(shiny::need(
+        length(selected) == 1L && nzchar(selected),
+        "Select a treatment / group variable."
+      ))
+      selected
+    })
+
+    population_name_r <- shiny::reactive({
+      selected <- selected_column_name(selectors$population_var())
+      shiny::validate(shiny::need(
+        length(selected) == 1L && nzchar(selected),
+        "Select a population flag."
+      ))
+      selected
     })
 
     classified_r <- shiny::reactive({
@@ -167,8 +189,8 @@ srv_g_edish <- function(id,
       classify_hyslaw(
         adsl = req_data[[adsl_name]],
         adlb = req_data[[adlb_name]],
-        arm_var = input$arm_var,
-        population_var = input$population_var %||% population_var,
+        arm_var = arm_name_r(),
+        population_var = population_name_r(),
         population_value = population_value,
         window_days = input$window_days %||% window_days,
         exclude_alp = isTRUE(input$exclude_alp),
@@ -202,8 +224,8 @@ srv_g_edish <- function(id,
       build_edish_code_text(
         adsl_name = adsl_name,
         adlb_name = adlb_name,
-        arm_var = input$arm_var,
-        population_var = input$population_var %||% population_var,
+        arm_var = arm_name_r(),
+        population_var = population_name_r(),
         window_days = input$window_days %||% window_days,
         exclude_alp = isTRUE(input$exclude_alp),
         compare = input$compare %||% compare,
@@ -231,10 +253,21 @@ srv_g_edish <- function(id,
 #' @param label Module label.
 #' @param adsl_name ADSL dataset name in `teal_data`.
 #' @param adlb_name ADLB dataset name.
-#' @param group_vars Named character vector of grouping variables.
-#' @param population_var Default population flag.
-#' @param population_value Population flag value to keep.
-#' @param population_choices Named choices shown in the population selector.
+#' @param arm_var (`teal.picks::variables()`)\cr
+#'   Treatment or grouping column on ADSL. `multiple` must be `FALSE`.
+#'   The default selection is `TRT01A`. The control shows column labels from the data.
+#' @param population_var (`teal.picks::variables()`)\cr
+#'   Population flag column on ADSL. `multiple` must be `FALSE`.
+#'   The default selection is `SAFFL`. A length-1 character string is deprecated
+#'   and still accepted as the selected flag.
+#' @param population_value Population flag value to keep. Not shown in the UI.
+#' @param group_vars `r lifecycle::badge("deprecated")` Named character vector of
+#'   treatment columns, such as `c("Actual Treatment" = "TRT01A")`. Still accepted.
+#'   Converted with [lifecycle::deprecate_warn()] to
+#'   `teal.picks::variables(choices, selected, multiple = FALSE)`. Prefer `arm_var`.
+#' @param population_choices `r lifecycle::badge("deprecated")` Named character vector
+#'   of population flag columns. Still accepted and converted the same way.
+#'   Prefer `population_var`.
 #' @param window_days Default concurrent window.
 #' @param exclude_alp Default ALP exclusion.
 #' @param compare Default threshold operator, `">="` or `">"`.
@@ -246,17 +279,46 @@ srv_g_edish <- function(id,
 #' @param log_axes Default log-axis setting.
 #'
 #' @return A `teal` module object.
+#'
+#' @examples
+#' synth <- make_synthetic_hyslaw_data(n_extra = 0L, seed = 1L)
+#' data <- teal.data::teal_data(ADSL = synth$ADSL, ADLB = synth$ADLB)
+#' app <- teal::init(
+#'   data = data,
+#'   modules = teal::modules(
+#'     tm_g_edish(
+#'       arm_var = teal.picks::variables(
+#'         choices = c("TRT01A", "SEX", "RACE", "COUNTRY"),
+#'         selected = "TRT01A",
+#'         multiple = FALSE
+#'       ),
+#'       population_var = teal.picks::variables(
+#'         choices = c("SAFFL", "ITTFL"),
+#'         selected = "SAFFL",
+#'         multiple = FALSE
+#'       )
+#'     )
+#'   )
+#' )
+#' if (interactive()) {
+#'   shiny::shinyApp(app$ui, app$server)
+#' }
+#'
 #' @export
 tm_g_edish <- function(label = "eDISH plot",
                        adsl_name = "ADSL",
                        adlb_name = "ADLB",
-                       group_vars = c("Actual Treatment" = "TRT01A"),
-                       population_var = "SAFFL",
-                       population_value = "Y",
-                       population_choices = c(
-                         "Safety (SAFFL)" = "SAFFL",
-                         "ITT (ITTFL)" = "ITTFL"
+                       arm_var = teal.picks::variables(
+                         choices = c("TRT01A", "TRT01P", "ARM", "SEX", "RACE", "COUNTRY"),
+                         selected = "TRT01A",
+                         multiple = FALSE
                        ),
+                       population_var = teal.picks::variables(
+                         choices = c("SAFFL", "ITTFL"),
+                         selected = "SAFFL",
+                         multiple = FALSE
+                       ),
+                       population_value = "Y",
                        window_days = 14,
                        exclude_alp = TRUE,
                        compare = c(">=", ">"),
@@ -265,17 +327,16 @@ tm_g_edish <- function(label = "eDISH plot",
                        facet = FALSE,
                        annotate_quadrants = TRUE,
                        mark_potential = TRUE,
-                       log_axes = TRUE) {
+                       log_axes = TRUE,
+                       group_vars = NULL,
+                       population_choices = NULL) {
   compare <- match.arg(compare)
   which <- match.arg(which)
   color_by <- match.arg(color_by)
   checkmate::assert_string(label)
   checkmate::assert_string(adsl_name)
   checkmate::assert_string(adlb_name)
-  checkmate::assert_character(group_vars, min.len = 1L, names = "named")
-  checkmate::assert_string(population_var)
   checkmate::assert_string(population_value)
-  checkmate::assert_character(population_choices, min.len = 1L, names = "named")
   checkmate::assert_number(window_days, lower = 0, finite = TRUE)
   checkmate::assert_flag(exclude_alp)
   checkmate::assert_flag(facet)
@@ -283,14 +344,25 @@ tm_g_edish <- function(label = "eDISH plot",
   checkmate::assert_flag(mark_potential)
   checkmate::assert_flag(log_axes)
 
+  selectors <- migrate_hyslaw_selectors(
+    arm_var = arm_var,
+    group_vars = group_vars,
+    population_var = population_var,
+    population_choices = population_choices,
+    adsl_name = adsl_name,
+    fn_name = "tm_g_edish",
+    user_env = rlang::caller_env()
+  )
+  arm_var <- selectors$arm_var
+  population_var <- selectors$population_var
+
   teal::module(
     label = label,
     server = srv_g_edish,
     ui = ui_g_edish,
     ui_args = list(
-      group_vars = group_vars,
+      arm_var = arm_var,
       population_var = population_var,
-      population_choices = population_choices,
       window_days = window_days,
       exclude_alp = exclude_alp,
       compare = compare,
@@ -304,7 +376,7 @@ tm_g_edish <- function(label = "eDISH plot",
     server_args = list(
       adsl_name = adsl_name,
       adlb_name = adlb_name,
-      group_vars = group_vars,
+      arm_var = arm_var,
       population_var = population_var,
       population_value = population_value,
       window_days = window_days,

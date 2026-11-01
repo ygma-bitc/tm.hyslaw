@@ -8,15 +8,18 @@ tm_t_hyslaw(
   label = "Hy's Law table",
   adsl_name = "ADSL",
   adlb_name = "ADLB",
-  group_vars = c(`Actual Treatment` = "TRT01A"),
-  population_var = "SAFFL",
+  arm_var = teal.picks::variables(choices = c("TRT01A", "TRT01P", "ARM", "SEX", "RACE",
+    "COUNTRY"), selected = "TRT01A", multiple = FALSE),
+  population_var = teal.picks::variables(choices = c("SAFFL", "ITTFL"), selected =
+    "SAFFL", multiple = FALSE),
   population_value = "Y",
-  population_choices = c(`Safety (SAFFL)` = "SAFFL", `ITT (ITTFL)` = "ITTFL"),
   window_days = 14,
   exclude_alp = TRUE,
   compare = c(">=", ">"),
   show_total = TRUE,
-  table_which = c("both", "review", "elevation")
+  table_which = c("both", "review", "elevation"),
+  group_vars = NULL,
+  population_choices = NULL
 )
 }
 \arguments{
@@ -26,13 +29,16 @@ tm_t_hyslaw(
 
 \item{adlb_name}{ADLB dataset name.}
 
-\item{group_vars}{Named character vector of grouping variables.}
+\item{arm_var}{(\code{teal.picks::variables()})\cr
+Treatment or grouping column on ADSL. \code{multiple} must be \code{FALSE}.
+The default selection is \code{TRT01A}. The control shows column labels from the data.}
 
-\item{population_var}{Default population flag.}
+\item{population_var}{(\code{teal.picks::variables()})\cr
+Population flag column on ADSL. \code{multiple} must be \code{FALSE}.
+The default selection is \code{SAFFL}. A length-1 character string is deprecated
+and still accepted as the selected flag.}
 
-\item{population_value}{Population flag value to keep.}
-
-\item{population_choices}{Named choices shown in the population selector.}
+\item{population_value}{Population flag value to keep. Not shown in the UI.}
 
 \item{window_days}{Default concurrent window.}
 
@@ -43,10 +49,44 @@ tm_t_hyslaw(
 \item{show_total}{Initial Total-column setting.}
 
 \item{table_which}{\code{"review"}, \code{"elevation"}, or \code{"both"}.}
+
+\item{group_vars}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} Named character vector of
+treatment columns, such as \code{c("Actual Treatment" = "TRT01A")}. Still accepted.
+Converted with \code{\link[lifecycle:deprecate_warn]{lifecycle::deprecate_warn()}} to
+\code{teal.picks::variables(choices, selected, multiple = FALSE)}. Prefer \code{arm_var}.}
+
+\item{population_choices}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} Named character vector
+of population flag columns. Still accepted and converted the same way.
+Prefer \code{population_var}.}
 }
 \value{
 A \code{teal} module object.
 }
 \description{
 teal Module: Hy's Law summary table and notable listing
+}
+\examples{
+synth <- make_synthetic_hyslaw_data(n_extra = 0L, seed = 1L)
+data <- teal.data::teal_data(ADSL = synth$ADSL, ADLB = synth$ADLB)
+app <- teal::init(
+  data = data,
+  modules = teal::modules(
+    tm_t_hyslaw(
+      arm_var = teal.picks::variables(
+        choices = c("TRT01A", "SEX", "RACE", "COUNTRY"),
+        selected = "TRT01A",
+        multiple = FALSE
+      ),
+      population_var = teal.picks::variables(
+        choices = c("SAFFL", "ITTFL"),
+        selected = "SAFFL",
+        multiple = FALSE
+      )
+    )
+  )
+)
+if (interactive()) {
+  shiny::shinyApp(app$ui, app$server)
+}
+
 }
