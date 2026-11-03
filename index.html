@@ -4,14 +4,14 @@
 <meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<title>Teal Modules for Hy's Law Monitoring and eDISH Plots • tm.hyslaw</title>
+<title>teal Modules for Hy's Law Monitoring and Evaluation of Drug-Induced Serious Hepatotoxicity (eDISH) Plots • tm.hyslaw</title>
 <script src="deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="deps/bootstrap-5.3.8/bootstrap.min.css" rel="stylesheet">
 <script src="deps/bootstrap-5.3.8/bootstrap.bundle.min.js"></script><link href="deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
 <link href="deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
-<script src="deps/headroom-0.11.0/headroom.min.js"></script><script src="deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="deps/search-1.0.0/fuse.min.js"></script><script src="deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="pkgdown.js"></script><meta property="og:title" content="Teal Modules for Hy's Law Monitoring and eDISH Plots">
-<meta name="description" content="Provides an open-source teal module and reusable builders for exploratory Hy's Law monitoring from CDISC ADaM-style ADSL and ADLB. Peak eDISH, mDISH, and cholestatic screening plots plus concurrent ALT/AST plus bilirubin elevations (optional ALP exclusion) are classified without depending on study-specific ADDILI datasets. Table and plot builders can be called without launching Shiny.">
-<meta property="og:description" content="Provides an open-source teal module and reusable builders for exploratory Hy's Law monitoring from CDISC ADaM-style ADSL and ADLB. Peak eDISH, mDISH, and cholestatic screening plots plus concurrent ALT/AST plus bilirubin elevations (optional ALP exclusion) are classified without depending on study-specific ADDILI datasets. Table and plot builders can be called without launching Shiny.">
+<script src="deps/headroom-0.11.0/headroom.min.js"></script><script src="deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="deps/search-1.0.0/fuse.min.js"></script><script src="deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="pkgdown.js"></script><meta property="og:title" content="teal Modules for Hy's Law Monitoring and Evaluation of Drug-Induced Serious Hepatotoxicity (eDISH) Plots">
+<meta name="description" content="Provides open-source teal modules and reusable builders for exploratory monitoring of Hys Law (Hyman Zimmermans observation that hepatocellular injury with jaundice predicts severe drug-induced liver injury) from Clinical Data Interchange Standards Consortium (CDISC) Analysis Data Model (ADaM) subject-level analysis dataset (ADSL) and laboratory analysis dataset (ADLB) records. Peak evaluation of Drug-Induced Serious Hepatotoxicity (eDISH), modified evaluation of Drug-Induced Serious Hepatotoxicity (mDISH; on-treatment peaks divided by baseline), and cholestatic screening plots are produced, and concurrent alanine aminotransferase (ALT) or aspartate aminotransferase (AST) plus bilirubin elevations, with optional alkaline phosphatase (ALP) exclusion, are classified without a study-specific drug-induced liver injury analysis dataset (ADDILI). Table and plot builders can be called without launching shiny. Hy's Law and eDISH criteria are discussed by Temple (2006) &lt;doi:10.1002/pds.1211&gt;, the United States Food and Drug Administration (2009) &quot;Drug-Induced Liver Injury: Premarketing Clinical Evaluation&quot; &lt;https://www.fda.gov/media/116737/download&gt;, and Watkins et al. (2011) &lt;doi:10.2165/11586600-000000000-00000&gt;. Baseline-scaled mDISH plots follow the fold-baseline display in Lin et al. (2012) &lt;doi:10.1007/BF03261982&gt;.">
+<meta property="og:description" content="Provides open-source teal modules and reusable builders for exploratory monitoring of Hys Law (Hyman Zimmermans observation that hepatocellular injury with jaundice predicts severe drug-induced liver injury) from Clinical Data Interchange Standards Consortium (CDISC) Analysis Data Model (ADaM) subject-level analysis dataset (ADSL) and laboratory analysis dataset (ADLB) records. Peak evaluation of Drug-Induced Serious Hepatotoxicity (eDISH), modified evaluation of Drug-Induced Serious Hepatotoxicity (mDISH; on-treatment peaks divided by baseline), and cholestatic screening plots are produced, and concurrent alanine aminotransferase (ALT) or aspartate aminotransferase (AST) plus bilirubin elevations, with optional alkaline phosphatase (ALP) exclusion, are classified without a study-specific drug-induced liver injury analysis dataset (ADDILI). Table and plot builders can be called without launching shiny. Hy's Law and eDISH criteria are discussed by Temple (2006) &lt;doi:10.1002/pds.1211&gt;, the United States Food and Drug Administration (2009) &quot;Drug-Induced Liver Injury: Premarketing Clinical Evaluation&quot; &lt;https://www.fda.gov/media/116737/download&gt;, and Watkins et al. (2011) &lt;doi:10.2165/11586600-000000000-00000&gt;. Baseline-scaled mDISH plots follow the fold-baseline display in Lin et al. (2012) &lt;doi:10.1007/BF03261982&gt;.">
 </head>
 <body>
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
@@ -248,7 +248,7 @@
 <div class="developers">
 <h2 data-toc-skip>Developers</h2>
 <ul class="list-unstyled">
-<li>Y.G. Ma <br><small class="roles"> Author, maintainer </small>   </li>
+<li>Yaoguang Ma <br><small class="roles"> Author, maintainer </small>   </li>
 </ul>
 </div>
 
@@ -259,7 +259,7 @@
 
 
     <footer><div class="pkgdown-footer-left">
-  <p>Developed by Y.G. Ma.</p>
+  <p>Developed by Yaoguang Ma.</p>
 </div>
 
 <div class="pkgdown-footer-right">
