@@ -2,6 +2,11 @@
 
 ## tm.hyslaw 0.2.0
 
+- Encoding badges show the selected column (`TRT01A`) without the
+  dataset prefix (`ADSL_OPEN TRT01A`). `teal.picks` hard-codes both
+  names into the badge. The label passed to its badge UI is the column
+  name. The tooltip still lists the dataset and the column, and the menu
+  still shows the column label.
 - [`tm_g_edish()`](https://ygma-bitc.github.io/tm.hyslaw/reference/tm_g_edish.md)
   and
   [`tm_t_hyslaw()`](https://ygma-bitc.github.io/tm.hyslaw/reference/tm_t_hyslaw.md)

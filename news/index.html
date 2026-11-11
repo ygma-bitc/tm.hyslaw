@@ -32,7 +32,8 @@
 
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.2.0" id="tmhyslaw-020">tm.hyslaw 0.2.0<a class="anchor" aria-label="anchor" href="#tmhyslaw-020"></a></h2>
-<ul><li>
+<ul><li>Encoding badges show the selected column (<code>TRT01A</code>) without the dataset prefix (<code>ADSL_OPEN TRT01A</code>). <code>teal.picks</code> hard-codes both names into the badge. The label passed to its badge UI is the column name. The tooltip still lists the dataset and the column, and the menu still shows the column label.</li>
+<li>
 <code><a href="../reference/tm_g_edish.html">tm_g_edish()</a></code> and <code><a href="../reference/tm_t_hyslaw.html">tm_t_hyslaw()</a></code> select the treatment column and the population flag with <code><a href="https://rdrr.io/pkg/teal.picks/man/picks.html" class="external-link">teal.picks::variables()</a></code> on ADSL. Display names come from column labels. Named <code>group_vars</code> and <code>population_choices</code> vectors still run, with a deprecation warning, and are converted to <code>variables(choices, selected)</code>.</li>
 <li>Added R CMD check and pkgdown GitHub Actions workflows for release-ready open-source development.</li>
 <li>Added <code>_pkgdown.yml</code> reference grouping and a lightweight <code>.lintr</code> configuration.</li>

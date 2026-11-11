@@ -42,8 +42,8 @@ tm_t_hyslaw(
 
   ([`teal.picks::variables()`](https://rdrr.io/pkg/teal.picks/man/picks.html))  
   Treatment or grouping column on ADSL. `multiple` must be `FALSE`. The
-  default selection is `TRT01A`. The control shows column labels from
-  the data.
+  default selection is `TRT01A`. The badge shows the column name. The
+  menu shows that column's label from the data.
 
 - population_var:
 

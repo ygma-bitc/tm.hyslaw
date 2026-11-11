@@ -70,8 +70,9 @@ and
 choose the treatment column and the population flag with
 [`teal.picks::variables()`](https://rdrr.io/pkg/teal.picks/man/picks.html)
 on ADSL. Both selectors are a single column (`multiple = FALSE`).
-Defaults are `TRT01A` and `SAFFL`. The control shows each column’s label
-from the data.
+Defaults are `TRT01A` and `SAFFL`. The badge shows the column name. The
+menu shows that column’s label from the data. The tooltip still names
+the dataset.
 
 `population_value` stays `"Y"` and is not a selector. Window, threshold
 operator, plot type, color, facet, and the checkboxes are unchanged.

@@ -124,7 +124,7 @@
 <div class="section level2">
 <h2 id="teal-column-selectors">Teal column selectors<a class="anchor" aria-label="anchor" href="#teal-column-selectors"></a>
 </h2>
-<p><code><a href="reference/tm_g_edish.html">tm_g_edish()</a></code> and <code><a href="reference/tm_t_hyslaw.html">tm_t_hyslaw()</a></code> choose the treatment column and the population flag with <code><a href="https://rdrr.io/pkg/teal.picks/man/picks.html" class="external-link">teal.picks::variables()</a></code> on ADSL. Both selectors are a single column (<code>multiple = FALSE</code>). Defaults are <code>TRT01A</code> and <code>SAFFL</code>. The control shows each column’s label from the data.</p>
+<p><code><a href="reference/tm_g_edish.html">tm_g_edish()</a></code> and <code><a href="reference/tm_t_hyslaw.html">tm_t_hyslaw()</a></code> choose the treatment column and the population flag with <code><a href="https://rdrr.io/pkg/teal.picks/man/picks.html" class="external-link">teal.picks::variables()</a></code> on ADSL. Both selectors are a single column (<code>multiple = FALSE</code>). Defaults are <code>TRT01A</code> and <code>SAFFL</code>. The badge shows the column name. The menu shows that column’s label from the data. The tooltip still names the dataset.</p>
 <p><code>population_value</code> stays <code>"Y"</code> and is not a selector. Window, threshold operator, plot type, color, facet, and the checkboxes are unchanged.</p>
 <p>A named character vector can still be passed as <code>group_vars</code> or <code>population_choices</code>. That form warns and is converted to <code>teal.picks::variables(choices, selected)</code>.</p>
 </div>
