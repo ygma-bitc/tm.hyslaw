@@ -13,6 +13,29 @@ test_that("standardize_adlb() maps A1HI and ALKPH", {
   expect_equal(out$AVAL, 240)
 })
 
+test_that("encoding badge shows the column and keeps the dataset in the tooltip", {
+  pick <- teal.picks::picks(
+    teal.picks::datasets(choices = "ADSL_OPEN", selected = "ADSL_OPEN"),
+    teal.picks::variables(
+      choices = c("TRT01A", "SEX"),
+      selected = "TRT01A",
+      multiple = FALSE
+    )
+  )
+  html <- as.character(variable_badge(pick))
+  expect_match(html, ">TRT01A</span>")
+  expect_match(html, "datasets: ADSL_OPEN")
+  expect_match(html, "variables: TRT01A")
+  expect_false(grepl("ADSL_OPEN TRT01A", html, fixed = TRUE))
+
+  pick$variables$selected <- NA_character_
+  pick$datasets$selected <- ""
+  html_empty <- as.character(variable_badge(pick))
+  expect_match(html_empty, ">~</span>")
+  expect_match(html_empty, "datasets: ~")
+  expect_match(html_empty, "variables: ~")
+})
+
 test_that("tm_g_edish() and tm_t_hyslaw() return teal modules", {
   g <- expect_silent(tm_g_edish(label = "eDISH"))
   t <- expect_silent(tm_t_hyslaw(label = "Hy's Law"))

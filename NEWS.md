@@ -1,5 +1,6 @@
 # tm.hyslaw 0.2.0
 
+* Encoding badges show the selected column (`TRT01A`) without the dataset prefix (`ADSL_OPEN TRT01A`). `teal.picks` hard-codes both names into the badge. The label passed to its badge UI is the column name. The tooltip still lists the dataset and the column, and the menu still shows the column label.
 * `tm_g_edish()` and `tm_t_hyslaw()` select the treatment column and the population flag with `teal.picks::variables()` on ADSL. Display names come from column labels. Named `group_vars` and `population_choices` vectors still run, with a deprecation warning, and are converted to `variables(choices, selected)`.
 * Added R CMD check and pkgdown GitHub Actions workflows for release-ready open-source development.
 * Added `_pkgdown.yml` reference grouping and a lightweight `.lintr` configuration.

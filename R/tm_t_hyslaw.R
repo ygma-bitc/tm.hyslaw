@@ -67,11 +67,11 @@ ui_t_hyslaw <- function(id, ...) {
         shiny::tags$label("Encodings", class = "text-primary"),
         shiny::tags$div(
           shiny::tags$label("Treatment / group variable"),
-          teal.picks::picks_ui(ns("arm_var"), a$arm_var)
+          hyslaw_picks_ui(ns, "arm_var", a$arm_var)
         ),
         shiny::tags$div(
           shiny::tags$label("Population flag"),
-          teal.picks::picks_ui(ns("population_var"), a$population_var)
+          hyslaw_picks_ui(ns, "population_var", a$population_var)
         ),
         shiny::numericInput(
           inputId = ns("window_days"),
@@ -136,6 +136,7 @@ srv_t_hyslaw <- function(id,
       picks = list(arm_var = arm_var, population_var = population_var),
       data = data
     )
+    bind_variable_badges(output, selectors)
 
     iv_r <- shiny::reactive({
       iv <- shinyvalidate::InputValidator$new()

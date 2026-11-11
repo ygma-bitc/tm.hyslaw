@@ -48,7 +48,7 @@ ui_g_edish <- function(id, ...) {
         shiny::tags$label("Encodings", class = "text-primary"),
         shiny::tags$div(
           shiny::tags$label("Treatment / group variable"),
-          teal.picks::picks_ui(ns("arm_var"), a$arm_var)
+          hyslaw_picks_ui(ns, "arm_var", a$arm_var)
         ),
         shiny::tags$p(
           class = "help-block",
@@ -66,7 +66,7 @@ ui_g_edish <- function(id, ...) {
         ),
         shiny::tags$div(
           shiny::tags$label("Population flag"),
-          teal.picks::picks_ui(ns("population_var"), a$population_var)
+          hyslaw_picks_ui(ns, "population_var", a$population_var)
         ),
         shiny::numericInput(
           inputId = ns("window_days"),
@@ -146,6 +146,7 @@ srv_g_edish <- function(id,
       picks = list(arm_var = arm_var, population_var = population_var),
       data = data
     )
+    bind_variable_badges(output, selectors)
 
     iv_r <- shiny::reactive({
       iv <- shinyvalidate::InputValidator$new()
@@ -255,7 +256,8 @@ srv_g_edish <- function(id,
 #' @param adlb_name ADLB dataset name.
 #' @param arm_var (`teal.picks::variables()`)\cr
 #'   Treatment or grouping column on ADSL. `multiple` must be `FALSE`.
-#'   The default selection is `TRT01A`. The control shows column labels from the data.
+#'   The default selection is `TRT01A`. The badge shows the column name.
+#'   The menu shows that column's label from the data.
 #' @param population_var (`teal.picks::variables()`)\cr
 #'   Population flag column on ADSL. `multiple` must be `FALSE`.
 #'   The default selection is `SAFFL`. A length-1 character string is deprecated
