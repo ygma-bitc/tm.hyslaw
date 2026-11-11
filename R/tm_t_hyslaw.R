@@ -63,52 +63,48 @@ ui_t_hyslaw <- function(id, ...) {
         shiny::h4("Notable subject listing"),
         shiny::tableOutput(ns("listing"))
       ),
-      encoding = shiny::tagList(
-        hyslaw_encoding_dependency(),
+      encoding = shiny::tags$div(
+        shiny::tags$label("Encodings", class = "text-primary"),
         shiny::tags$div(
-          class = "tm-hyslaw-encoding",
-          shiny::tags$label("Encodings", class = "text-primary"),
-          shiny::tags$div(
-            shiny::tags$label("Treatment / group variable"),
-            hyslaw_picks_ui(ns, "arm_var", a$arm_var)
+          shiny::tags$label("Treatment / group variable"),
+          hyslaw_picks_ui(ns, "arm_var", a$arm_var)
+        ),
+        shiny::tags$div(
+          shiny::tags$label("Population flag"),
+          hyslaw_picks_ui(ns, "population_var", a$population_var)
+        ),
+        shiny::numericInput(
+          inputId = ns("window_days"),
+          label = "Concurrent window (days)",
+          value = a$window_days,
+          min = 0,
+          step = 1
+        ),
+        shiny::radioButtons(
+          inputId = ns("compare"),
+          label = "Threshold operator",
+          choices = c(">=" = ">=", ">" = ">"),
+          selected = a$compare
+        ),
+        shiny::checkboxInput(
+          inputId = ns("exclude_alp"),
+          label = "Exclude concurrent cases with ALP >= cut in window",
+          value = isTRUE(a$exclude_alp)
+        ),
+        shiny::radioButtons(
+          inputId = ns("table_which"),
+          label = "Tables",
+          choices = c(
+            "Peak quadrants + concurrent" = "review",
+            "Nested elevations" = "elevation",
+            "Both" = "both"
           ),
-          shiny::tags$div(
-            shiny::tags$label("Population flag"),
-            hyslaw_picks_ui(ns, "population_var", a$population_var)
-          ),
-          shiny::numericInput(
-            inputId = ns("window_days"),
-            label = "Concurrent window (days)",
-            value = a$window_days,
-            min = 0,
-            step = 1
-          ),
-          shiny::radioButtons(
-            inputId = ns("compare"),
-            label = "Threshold operator",
-            choices = c(">=" = ">=", ">" = ">"),
-            selected = a$compare
-          ),
-          shiny::checkboxInput(
-            inputId = ns("exclude_alp"),
-            label = "Exclude concurrent cases with ALP >= cut in window",
-            value = isTRUE(a$exclude_alp)
-          ),
-          shiny::radioButtons(
-            inputId = ns("table_which"),
-            label = "Tables",
-            choices = c(
-              "Peak quadrants + concurrent" = "review",
-              "Nested elevations" = "elevation",
-              "Both" = "both"
-            ),
-            selected = a$table_which
-          ),
-          shiny::checkboxInput(
-            inputId = ns("show_total"),
-            label = "Show Total column",
-            value = isTRUE(a$show_total)
-          )
+          selected = a$table_which
+        ),
+        shiny::checkboxInput(
+          inputId = ns("show_total"),
+          label = "Show Total column",
+          value = isTRUE(a$show_total)
         )
       ),
       forms = shiny::tagList(

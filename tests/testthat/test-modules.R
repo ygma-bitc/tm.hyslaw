@@ -27,6 +27,13 @@ test_that("encoding badge shows the column and keeps the dataset in the tooltip"
   expect_match(html, "datasets: ADSL_OPEN")
   expect_match(html, "variables: TRT01A")
   expect_false(grepl("ADSL_OPEN TRT01A", html, fixed = TRUE))
+
+  pick$variables$selected <- NA_character_
+  pick$datasets$selected <- ""
+  html_empty <- as.character(variable_badge(pick))
+  expect_match(html_empty, ">~</span>")
+  expect_match(html_empty, "datasets: ~")
+  expect_match(html_empty, "variables: ~")
 })
 
 test_that("tm_g_edish() and tm_t_hyslaw() return teal modules", {

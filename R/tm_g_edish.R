@@ -44,77 +44,73 @@ ui_g_edish <- function(id, ...) {
       output = teal.widgets::white_small_well(
         shiny::plotOutput(ns("edish_plot"), height = "560px")
       ),
-      encoding = shiny::tagList(
-        hyslaw_encoding_dependency(),
+      encoding = shiny::tags$div(
+        shiny::tags$label("Encodings", class = "text-primary"),
         shiny::tags$div(
-          class = "tm-hyslaw-encoding",
-          shiny::tags$label("Encodings", class = "text-primary"),
-          shiny::tags$div(
-            shiny::tags$label("Treatment / group variable"),
-            hyslaw_picks_ui(ns, "arm_var", a$arm_var)
+          shiny::tags$label("Treatment / group variable"),
+          hyslaw_picks_ui(ns, "arm_var", a$arm_var)
+        ),
+        shiny::tags$p(
+          class = "help-block",
+          "Default: one panel colored by group (arm imbalance). Facet is optional."
+        ),
+        shiny::radioButtons(
+          inputId = ns("which"),
+          label = "Plot",
+          choices = c(
+            "eDISH (ALT or AST / ULN)" = "edish",
+            "mDISH (peak / baseline)" = "mdish",
+            "Cholestatic (ALP / ULN)" = "cholestatic"
           ),
-          shiny::tags$p(
-            class = "help-block",
-            "Default: one panel colored by group (arm imbalance). Facet is optional."
-          ),
-          shiny::radioButtons(
-            inputId = ns("which"),
-            label = "Plot",
-            choices = c(
-              "eDISH (ALT or AST / ULN)" = "edish",
-              "mDISH (peak / baseline)" = "mdish",
-              "Cholestatic (ALP / ULN)" = "cholestatic"
-            ),
-            selected = a$which
-          ),
-          shiny::tags$div(
-            shiny::tags$label("Population flag"),
-            hyslaw_picks_ui(ns, "population_var", a$population_var)
-          ),
-          shiny::numericInput(
-            inputId = ns("window_days"),
-            label = "Concurrent window (days)",
-            value = a$window_days,
-            min = 0,
-            step = 1
-          ),
-          shiny::radioButtons(
-            inputId = ns("compare"),
-            label = "Threshold operator",
-            choices = c(">=" = ">=", ">" = ">"),
-            selected = a$compare
-          ),
-          shiny::checkboxInput(
-            inputId = ns("exclude_alp"),
-            label = "Exclude concurrent cases with ALP >= cut in window",
-            value = isTRUE(a$exclude_alp)
-          ),
-          shiny::radioButtons(
-            inputId = ns("color_by"),
-            label = "Color points by",
-            choices = c("Group variable" = "arm", "Screening quadrant" = "quadrant"),
-            selected = a$color_by
-          ),
-          shiny::checkboxInput(
-            inputId = ns("facet"),
-            label = "Facet by group variable",
-            value = isTRUE(a$facet)
-          ),
-          shiny::checkboxInput(
-            inputId = ns("annotate_quadrants"),
-            label = "Label quadrants on the plot",
-            value = isTRUE(a$annotate_quadrants)
-          ),
-          shiny::checkboxInput(
-            inputId = ns("mark_potential"),
-            label = "Circle biochemical potential / concurrent cases",
-            value = isTRUE(a$mark_potential)
-          ),
-          shiny::checkboxInput(
-            inputId = ns("log_axes"),
-            label = "Log10 axes",
-            value = isTRUE(a$log_axes)
-          )
+          selected = a$which
+        ),
+        shiny::tags$div(
+          shiny::tags$label("Population flag"),
+          hyslaw_picks_ui(ns, "population_var", a$population_var)
+        ),
+        shiny::numericInput(
+          inputId = ns("window_days"),
+          label = "Concurrent window (days)",
+          value = a$window_days,
+          min = 0,
+          step = 1
+        ),
+        shiny::radioButtons(
+          inputId = ns("compare"),
+          label = "Threshold operator",
+          choices = c(">=" = ">=", ">" = ">"),
+          selected = a$compare
+        ),
+        shiny::checkboxInput(
+          inputId = ns("exclude_alp"),
+          label = "Exclude concurrent cases with ALP >= cut in window",
+          value = isTRUE(a$exclude_alp)
+        ),
+        shiny::radioButtons(
+          inputId = ns("color_by"),
+          label = "Color points by",
+          choices = c("Group variable" = "arm", "Screening quadrant" = "quadrant"),
+          selected = a$color_by
+        ),
+        shiny::checkboxInput(
+          inputId = ns("facet"),
+          label = "Facet by group variable",
+          value = isTRUE(a$facet)
+        ),
+        shiny::checkboxInput(
+          inputId = ns("annotate_quadrants"),
+          label = "Label quadrants on the plot",
+          value = isTRUE(a$annotate_quadrants)
+        ),
+        shiny::checkboxInput(
+          inputId = ns("mark_potential"),
+          label = "Circle biochemical potential / concurrent cases",
+          value = isTRUE(a$mark_potential)
+        ),
+        shiny::checkboxInput(
+          inputId = ns("log_axes"),
+          label = "Log10 axes",
+          value = isTRUE(a$log_axes)
         )
       ),
       forms = shiny::tagList(
