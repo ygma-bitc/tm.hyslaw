@@ -2,6 +2,7 @@
 ^\.Rproj\.user$
 ^\.git$
 ^\.github$
+^\.cursor$
 ^\.gitignore$
 ^\.lintr$
 ^\.DS_Store$
