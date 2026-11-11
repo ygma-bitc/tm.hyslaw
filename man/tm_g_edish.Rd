@@ -35,7 +35,8 @@ tm_g_edish(
 
 \item{arm_var}{(\code{teal.picks::variables()})\cr
 Treatment or grouping column on ADSL. \code{multiple} must be \code{FALSE}.
-The default selection is \code{TRT01A}. The control shows column labels from the data.}
+The default selection is \code{TRT01A}. The badge shows the column name.
+The menu shows that column's label from the data.}
 
 \item{population_var}{(\code{teal.picks::variables()})\cr
 Population flag column on ADSL. \code{multiple} must be \code{FALSE}.

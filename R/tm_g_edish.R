@@ -44,73 +44,77 @@ ui_g_edish <- function(id, ...) {
       output = teal.widgets::white_small_well(
         shiny::plotOutput(ns("edish_plot"), height = "560px")
       ),
-      encoding = shiny::tags$div(
-        shiny::tags$label("Encodings", class = "text-primary"),
+      encoding = shiny::tagList(
+        hyslaw_encoding_dependency(),
         shiny::tags$div(
-          shiny::tags$label("Treatment / group variable"),
-          teal.picks::picks_ui(ns("arm_var"), a$arm_var)
-        ),
-        shiny::tags$p(
-          class = "help-block",
-          "Default: one panel colored by group (arm imbalance). Facet is optional."
-        ),
-        shiny::radioButtons(
-          inputId = ns("which"),
-          label = "Plot",
-          choices = c(
-            "eDISH (ALT or AST / ULN)" = "edish",
-            "mDISH (peak / baseline)" = "mdish",
-            "Cholestatic (ALP / ULN)" = "cholestatic"
+          class = "tm-hyslaw-encoding",
+          shiny::tags$label("Encodings", class = "text-primary"),
+          shiny::tags$div(
+            shiny::tags$label("Treatment / group variable"),
+            hyslaw_picks_ui(ns, "arm_var", a$arm_var)
           ),
-          selected = a$which
-        ),
-        shiny::tags$div(
-          shiny::tags$label("Population flag"),
-          teal.picks::picks_ui(ns("population_var"), a$population_var)
-        ),
-        shiny::numericInput(
-          inputId = ns("window_days"),
-          label = "Concurrent window (days)",
-          value = a$window_days,
-          min = 0,
-          step = 1
-        ),
-        shiny::radioButtons(
-          inputId = ns("compare"),
-          label = "Threshold operator",
-          choices = c(">=" = ">=", ">" = ">"),
-          selected = a$compare
-        ),
-        shiny::checkboxInput(
-          inputId = ns("exclude_alp"),
-          label = "Exclude concurrent cases with ALP >= cut in window",
-          value = isTRUE(a$exclude_alp)
-        ),
-        shiny::radioButtons(
-          inputId = ns("color_by"),
-          label = "Color points by",
-          choices = c("Group variable" = "arm", "Screening quadrant" = "quadrant"),
-          selected = a$color_by
-        ),
-        shiny::checkboxInput(
-          inputId = ns("facet"),
-          label = "Facet by group variable",
-          value = isTRUE(a$facet)
-        ),
-        shiny::checkboxInput(
-          inputId = ns("annotate_quadrants"),
-          label = "Label quadrants on the plot",
-          value = isTRUE(a$annotate_quadrants)
-        ),
-        shiny::checkboxInput(
-          inputId = ns("mark_potential"),
-          label = "Circle biochemical potential / concurrent cases",
-          value = isTRUE(a$mark_potential)
-        ),
-        shiny::checkboxInput(
-          inputId = ns("log_axes"),
-          label = "Log10 axes",
-          value = isTRUE(a$log_axes)
+          shiny::tags$p(
+            class = "help-block",
+            "Default: one panel colored by group (arm imbalance). Facet is optional."
+          ),
+          shiny::radioButtons(
+            inputId = ns("which"),
+            label = "Plot",
+            choices = c(
+              "eDISH (ALT or AST / ULN)" = "edish",
+              "mDISH (peak / baseline)" = "mdish",
+              "Cholestatic (ALP / ULN)" = "cholestatic"
+            ),
+            selected = a$which
+          ),
+          shiny::tags$div(
+            shiny::tags$label("Population flag"),
+            hyslaw_picks_ui(ns, "population_var", a$population_var)
+          ),
+          shiny::numericInput(
+            inputId = ns("window_days"),
+            label = "Concurrent window (days)",
+            value = a$window_days,
+            min = 0,
+            step = 1
+          ),
+          shiny::radioButtons(
+            inputId = ns("compare"),
+            label = "Threshold operator",
+            choices = c(">=" = ">=", ">" = ">"),
+            selected = a$compare
+          ),
+          shiny::checkboxInput(
+            inputId = ns("exclude_alp"),
+            label = "Exclude concurrent cases with ALP >= cut in window",
+            value = isTRUE(a$exclude_alp)
+          ),
+          shiny::radioButtons(
+            inputId = ns("color_by"),
+            label = "Color points by",
+            choices = c("Group variable" = "arm", "Screening quadrant" = "quadrant"),
+            selected = a$color_by
+          ),
+          shiny::checkboxInput(
+            inputId = ns("facet"),
+            label = "Facet by group variable",
+            value = isTRUE(a$facet)
+          ),
+          shiny::checkboxInput(
+            inputId = ns("annotate_quadrants"),
+            label = "Label quadrants on the plot",
+            value = isTRUE(a$annotate_quadrants)
+          ),
+          shiny::checkboxInput(
+            inputId = ns("mark_potential"),
+            label = "Circle biochemical potential / concurrent cases",
+            value = isTRUE(a$mark_potential)
+          ),
+          shiny::checkboxInput(
+            inputId = ns("log_axes"),
+            label = "Log10 axes",
+            value = isTRUE(a$log_axes)
+          )
         )
       ),
       forms = shiny::tagList(
@@ -146,6 +150,7 @@ srv_g_edish <- function(id,
       picks = list(arm_var = arm_var, population_var = population_var),
       data = data
     )
+    bind_variable_badges(output, selectors)
 
     iv_r <- shiny::reactive({
       iv <- shinyvalidate::InputValidator$new()
@@ -255,7 +260,8 @@ srv_g_edish <- function(id,
 #' @param adlb_name ADLB dataset name.
 #' @param arm_var (`teal.picks::variables()`)\cr
 #'   Treatment or grouping column on ADSL. `multiple` must be `FALSE`.
-#'   The default selection is `TRT01A`. The control shows column labels from the data.
+#'   The default selection is `TRT01A`. The badge shows the column name.
+#'   The menu shows that column's label from the data.
 #' @param population_var (`teal.picks::variables()`)\cr
 #'   Population flag column on ADSL. `multiple` must be `FALSE`.
 #'   The default selection is `SAFFL`. A length-1 character string is deprecated
