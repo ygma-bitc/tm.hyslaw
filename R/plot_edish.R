@@ -141,10 +141,20 @@ plot_edish <- function(adsl = NULL,
 
   if (isTRUE(log_axes)) {
     p <- p +
-      ggplot2::scale_x_log10() +
-      ggplot2::scale_y_log10()
+      ggplot2::scale_x_log10(breaks = edish_log10_breaks, labels = edish_log10_labels) +
+      ggplot2::scale_y_log10(breaks = edish_log10_breaks, labels = edish_log10_labels)
   }
   p
+}
+
+
+# Powers of ten only. Default log breaks insert 1-3 steps on a short range.
+edish_log10_breaks <- function(limits) {
+  10^(floor(log10(min(limits))):ceiling(log10(max(limits))))
+}
+
+edish_log10_labels <- function(breaks) {
+  format(breaks, scientific = FALSE, trim = TRUE, drop0trailing = TRUE)
 }
 
 

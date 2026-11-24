@@ -55,6 +55,28 @@ test_that("plot_edish() defaults to one panel colored by group", {
   expect_match(p_default$labels$caption, "biochemical potential")
 })
 
+test_that("plot_edish() log axes break at powers of ten", {
+  data <- synthetic_hyslaw_fixture()
+  p <- plot_edish(data$ADSL, data$ADLB)
+  built <- ggplot2::ggplot_build(p)
+  scales <- list(
+    built$layout$panel_scales_x[[1]],
+    built$layout$panel_scales_y[[1]]
+  )
+
+  for (scale in scales) {
+    info <- scale$break_info()
+    breaks <- 10^info$major_source
+    expect_true(length(breaks) >= 1L)
+    expect_equal(log10(breaks), round(log10(breaks)))
+    expect_false(any(grepl("e", info$labels, ignore.case = TRUE)))
+    expect_equal(
+      as.character(info$labels),
+      format(breaks, scientific = FALSE, trim = TRUE, drop0trailing = TRUE)
+    )
+  }
+})
+
 test_that("plot_edish() draws mDISH and cholestatic screens", {
   data <- synthetic_hyslaw_fixture()
   p_mdish <- plot_edish(data$ADSL, data$ADLB, which = "mdish")
