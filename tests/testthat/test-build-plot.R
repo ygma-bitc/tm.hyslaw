@@ -67,7 +67,8 @@ test_that("plot_edish() log axes break at powers of ten", {
   for (scale in scales) {
     info <- scale$break_info()
     breaks <- 10^info$major_source
-    expect_true(length(breaks) >= 1L)
+    expect_equal(breaks, c(0.1, 1, 10))
+    expect_equal(10^scale$get_limits(), range(breaks))
     expect_equal(log10(breaks), round(log10(breaks)))
     expect_false(any(grepl("e", info$labels, ignore.case = TRUE)))
     expect_equal(
