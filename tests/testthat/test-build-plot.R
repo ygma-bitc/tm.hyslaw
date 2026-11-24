@@ -97,8 +97,9 @@ test_that("plot_edish() caption is readable, wrapped, and corner labels stay at 
   expect_equal(p$theme$plot.caption$size, 10)
   expect_equal(p$theme$plot.caption.position, "plot")
   caption_lines <- strsplit(p$labels$caption, "\n", fixed = TRUE)[[1L]]
-  expect_true(length(caption_lines) >= 5L)
-  expect_true(all(nchar(caption_lines) <= 105L))
+  expect_length(caption_lines, 5L)
+  expect_true(all(nchar(caption_lines) <= 120L))
+  expect_true(any(grepl("ALT/AST >= 3x ULN;", caption_lines, fixed = TRUE)))
 
   label_layers <- Filter(
     function(l) inherits(l$geom, "GeomText"),

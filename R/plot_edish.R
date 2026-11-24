@@ -252,30 +252,30 @@ plot_edish_caption <- function(which, classified, axes, mark_potential) {
     )
   } else {
     alp_note <- if (isTRUE(exclude_alp)) {
-      sprintf("; ALP %s %sx ULN in the same window excludes the case", op, classified$alp_cut %||% 2)
+      sprintf(";\nALP %s %sx ULN in the same window excludes the case", op, classified$alp_cut %||% 2)
     } else {
       ""
     }
+    sep_rule <- if (isTRUE(exclude_alp)) " " else "\n"
     mark <- sprintf(
       paste0(
         "Red open circles: biochemical potential Hy's Law (bilirubin %s %sx ULN ",
-        "on or within %s days after ALT/AST %s %sx ULN%s). Peak Hy's Law ",
+        "on or within %s days after ALT/AST %s %sx ULN%s).%sPeak Hy's Law ",
         "color/quadrant is not the same rule."
       ),
-      op, classified$bili_cut %||% 2, window_days, op, classified$alt_cut %||% 3, alp_note
+      op, classified$bili_cut %||% 2, window_days, op, classified$alt_cut %||% 3, alp_note, sep_rule
     )
   }
   if (!isTRUE(mark_potential)) {
     mark <- "Potential / concurrent cases are not circled on this plot."
   }
-  lines <- c(
+  paste(
     line1,
     pop,
     mark,
-    "Laboratory screening only; alternative causes are not assessed."
+    "Laboratory screening only; alternative causes are not assessed.",
+    sep = "\n"
   )
-  wrapped <- unlist(lapply(lines, strwrap, width = 105L), use.names = FALSE)
-  paste(wrapped, collapse = "\n")
 }
 
 
