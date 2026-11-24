@@ -89,3 +89,25 @@ test_that("plot_edish() draws mDISH and cholestatic screens", {
   expect_match(p_cdish$labels$x, "ALP")
   expect_match(p_cdish$labels$caption, "Cholestatic|ALP")
 })
+
+test_that("plot_edish() caption is readable, wrapped, and corner labels stay at panel corners", {
+  data <- synthetic_hyslaw_fixture()
+  p <- plot_edish(data$ADSL, data$ADLB)
+
+  expect_equal(p$theme$plot.caption$size, 10)
+  expect_equal(p$theme$plot.caption.position, "plot")
+  caption_lines <- strsplit(p$labels$caption, "\n", fixed = TRUE)[[1L]]
+  expect_length(caption_lines, 5L)
+  expect_true(all(nchar(caption_lines) <= 120L))
+  expect_true(any(grepl("ALT/AST >= 3x ULN;", caption_lines, fixed = TRUE)))
+
+  label_layers <- Filter(
+    function(l) inherits(l$geom, "GeomText"),
+    p$layers
+  )
+  expect_length(label_layers, 1L)
+  expect_equal(label_layers[[1L]]$data$hjust, c(0, 1, 0, 1))
+  expect_equal(label_layers[[1L]]$data$vjust, c(1, 1, 0, 0))
+  expect_true(all(is.finite(label_layers[[1L]]$data$x_plot)))
+  expect_true(all(is.finite(label_layers[[1L]]$data$y_plot)))
+})
