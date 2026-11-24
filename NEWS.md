@@ -1,3 +1,7 @@
+# tm.hyslaw (development version)
+
+* eDISH log axes tick at powers of ten with plain labels (`0.1`, `1`, `10`), and the reproducible code includes `log_axes`.
+
 # tm.hyslaw 0.2.0
 
 * Encoding badges show the selected column (`TRT01A`) without the dataset prefix (`ADSL_OPEN TRT01A`). `teal.picks` hard-codes both names into the badge. The label passed to its badge UI is the column name. The tooltip still lists the dataset and the column, and the menu still shows the column label.

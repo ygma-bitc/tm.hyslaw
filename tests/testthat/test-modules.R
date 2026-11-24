@@ -36,6 +36,25 @@ test_that("encoding badge shows the column and keeps the dataset in the tooltip"
   expect_match(html_empty, "variables: ~")
 })
 
+test_that("build_edish_code_text() emits log_axes when it is off", {
+  code <- tm.hyslaw:::build_edish_code_text(
+    adsl_name = "ADSL",
+    adlb_name = "ADLB",
+    arm_var = "TRT01A",
+    population_var = "SAFFL",
+    window_days = 14,
+    exclude_alp = TRUE,
+    compare = ">=",
+    which = "edish",
+    color_by = "arm",
+    log_axes = FALSE,
+    facet = FALSE,
+    annotate_quadrants = TRUE,
+    mark_potential = TRUE
+  )
+  expect_match(code, "log_axes = FALSE", fixed = TRUE)
+})
+
 test_that("tm_g_edish() and tm_t_hyslaw() return teal modules", {
   g <- expect_silent(tm_g_edish(label = "eDISH"))
   t <- expect_silent(tm_t_hyslaw(label = "Hy's Law"))
