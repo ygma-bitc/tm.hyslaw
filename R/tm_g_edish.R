@@ -44,7 +44,7 @@ ui_g_edish <- function(id, ...) {
     shinyjs::useShinyjs(),
     teal.widgets::standard_layout(
       output = teal.widgets::white_small_well(
-        shiny::plotOutput(ns("edish_plot"), height = "560px")
+        shiny::plotOutput(ns("edish_plot"), height = "620px")
       ),
       encoding = shiny::tags$div(
         shiny::tags$label("Encodings", class = "text-primary"),

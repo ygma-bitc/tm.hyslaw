@@ -113,7 +113,16 @@ plot_edish <- function(adsl = NULL,
       caption = plot_edish_caption(which, classified, axes, mark_potential)
     ) +
     ggplot2::theme_bw() +
-    ggplot2::theme(plot.caption = ggplot2::element_text(hjust = 0, size = 8))
+    ggplot2::theme(
+      plot.caption = ggplot2::element_text(
+        hjust = 0,
+        size = 10,
+        colour = "grey30",
+        lineheight = 1.25,
+        margin = ggplot2::margin(t = 10)
+      ),
+      plot.caption.position = "plot"
+    )
 
   if (isTRUE(mark_potential)) {
     mark <- subjects[isTRUE_na_false(subjects[[axes$mark_col]]), , drop = FALSE]
@@ -132,7 +141,7 @@ plot_edish <- function(adsl = NULL,
   }
 
   if (isTRUE(annotate_quadrants)) {
-    p <- p + quadrant_label_layer(x_cut, y_cut, axes$corner_labels)
+    p <- p + quadrant_label_layer(subjects, x_cut, y_cut, axes$corner_labels, log_axes)
   }
 
   if (isTRUE(do_facet)) {
@@ -259,24 +268,56 @@ plot_edish_caption <- function(which, classified, axes, mark_potential) {
   if (!isTRUE(mark_potential)) {
     mark <- "Potential / concurrent cases are not circled on this plot."
   }
-  paste(line1, pop, mark, "Laboratory screening only; alternative causes are not assessed.", sep = "\n")
+  lines <- c(
+    line1,
+    pop,
+    mark,
+    "Laboratory screening only; alternative causes are not assessed."
+  )
+  wrapped <- unlist(lapply(lines, strwrap, width = 105L), use.names = FALSE)
+  paste(wrapped, collapse = "\n")
 }
 
 
 #' @keywords internal
-quadrant_label_layer <- function(x_cut, y_cut, labels) {
+quadrant_label_layer <- function(subjects, x_cut, y_cut, labels, log_axes = TRUE) {
+  x_vals <- c(subjects$x_plot, x_cut * 0.32, x_cut * 3.2)
+  y_vals <- c(subjects$y_plot, y_cut * 0.32, y_cut * 3.2)
+  if (isTRUE(log_axes)) {
+    x_lim <- range(edish_log10_breaks(range(x_vals, na.rm = TRUE)))
+    y_lim <- range(edish_log10_breaks(range(y_vals, na.rm = TRUE)))
+    dx <- (x_lim[2L] / x_lim[1L])^0.025
+    dy <- (y_lim[2L] / y_lim[1L])^0.035
+    x_pos <- c(x_lim[1L] * dx, x_lim[2L] / dx, x_lim[1L] * dx, x_lim[2L] / dx)
+    y_pos <- c(y_lim[2L] / dy, y_lim[2L] / dy, y_lim[1L] * dy, y_lim[1L] * dy)
+  } else {
+    x_lim <- range(x_vals, na.rm = TRUE)
+    y_lim <- range(y_vals, na.rm = TRUE)
+    dx <- diff(x_lim) * 0.02
+    dy <- diff(y_lim) * 0.03
+    x_pos <- c(x_lim[1L] + dx, x_lim[2L] - dx, x_lim[1L] + dx, x_lim[2L] - dx)
+    y_pos <- c(y_lim[2L] - dy, y_lim[2L] - dy, y_lim[1L] + dy, y_lim[1L] + dy)
+  }
   labs_df <- data.frame(
-    x_plot = c(x_cut * 0.32, x_cut * 3.2, x_cut * 0.32, x_cut * 3.2),
-    y_plot = c(y_cut * 3.2, y_cut * 3.2, y_cut * 0.32, y_cut * 0.32),
+    x_plot = x_pos,
+    y_plot = y_pos,
+    hjust = c(0, 1, 0, 1),
+    vjust = c(1, 1, 0, 0),
     lab = labels,
     stringsAsFactors = FALSE
   )
   ggplot2::geom_text(
     data = labs_df,
-    mapping = ggplot2::aes(x = .data$x_plot, y = .data$y_plot, label = .data$lab),
+    mapping = ggplot2::aes(
+      x = .data$x_plot,
+      y = .data$y_plot,
+      label = .data$lab,
+      hjust = .data$hjust,
+      vjust = .data$vjust
+    ),
     inherit.aes = FALSE,
-    colour = "grey30",
-    size = 3.1,
+    colour = "grey35",
+    size = 3.4,
     fontface = "italic"
   )
 }
