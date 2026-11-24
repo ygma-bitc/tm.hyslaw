@@ -1,6 +1,13 @@
 # Changelog
 
+## tm.hyslaw (development version)
+
+- eDISH log axes tick at powers of ten with plain labels (`0.1`, `1`,
+  `10`), and the reproducible code includes `log_axes`.
+
 ## tm.hyslaw 0.2.0
+
+CRAN release: 2026-11-23
 
 - Encoding badges show the selected column (`TRT01A`) without the
   dataset prefix (`ADSL_OPEN TRT01A`). `teal.picks` hard-codes both
