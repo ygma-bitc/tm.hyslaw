@@ -2,6 +2,10 @@
 
 [![R-CMD-check](https://github.com/ygma-bitc/tm.hyslaw/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/ygma-bitc/tm.hyslaw/actions/workflows/R-CMD-check.yaml)
 [![pkgdown](https://github.com/ygma-bitc/tm.hyslaw/actions/workflows/pkgdown.yaml/badge.svg)](https://github.com/ygma-bitc/tm.hyslaw/actions/workflows/pkgdown.yaml)
+[![CRAN
+downloads](https://cranlogs.r-pkg.org/badges/grand-total/tm.hyslaw)](https://cran.r-project.org/package=tm.hyslaw)
+[![CRAN monthly
+downloads](https://cranlogs.r-pkg.org/badges/tm.hyslaw)](https://cran.r-project.org/package=tm.hyslaw)
 
 Teal modules and reusable builders for **exploratory Hy’s Law
 monitoring** from CDISC ADaM-style `ADSL` + `ADLB`.
