@@ -36,7 +36,7 @@ test_that("encoding badge shows the column and keeps the dataset in the tooltip"
   expect_match(html_empty, "variables: ~")
 })
 
-test_that("build_edish_code_text() emits log_axes when it is off", {
+test_that("build_edish_code_text() emits interactive plot code and static comment", {
   code <- tm.hyslaw:::build_edish_code_text(
     adsl_name = "ADSL",
     adlb_name = "ADLB",
@@ -52,6 +52,8 @@ test_that("build_edish_code_text() emits log_axes when it is off", {
     annotate_quadrants = TRUE,
     mark_potential = TRUE
   )
+  expect_match(code, "tm.hyslaw::plot_edish_interactive(", fixed = TRUE)
+  expect_match(code, "# tm.hyslaw::plot_edish(", fixed = TRUE)
   expect_match(code, "log_axes = FALSE", fixed = TRUE)
 })
 
@@ -132,6 +134,7 @@ test_that("multiple = TRUE is rejected", {
 })
 
 test_that("servers pass the selected column names to classify_hyslaw()", {
+  skip_if_not_installed("teal.data")
   synth <- make_synthetic_hyslaw_data(n_extra = 0L, seed = 1L)
   app_data <- teal.data::teal_data(ADSL = synth$ADSL, ADLB = synth$ADLB)
   g <- tm_g_edish(
@@ -155,6 +158,13 @@ test_that("servers pass the selected column names to classify_hyslaw()", {
       classified <- session$returned$classified()
       expect_equal(classified$arm_var, "SEX")
       expect_true("SEX" %in% names(classified$subjects))
+      expect_s3_class(session$returned$plot(), "ggplot")
+      p_int <- session$returned$plotly()
+      expect_s3_class(p_int, "plotly")
+      built <- plotly::plotly_build(p_int)
+      annot_texts <- vapply(built$x$layout$annotations, `[[`, character(1L), "text")
+      expect_false(any(grepl("Laboratory screening only", annot_texts, fixed = TRUE)))
+      expect_match(session$returned$caption(), "Laboratory screening only", fixed = TRUE)
     }
   )
 

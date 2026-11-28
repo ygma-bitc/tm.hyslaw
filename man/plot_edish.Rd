@@ -54,6 +54,10 @@ Open red circles mark biochemical potential Hy's Law (bilirubin in the
 concurrent window after ALT/AST elevation, with optional ALP exclusion).
 Axis maxima are not required to occur on the same day.
 }
+\details{
+Use \code{\link[=plot_edish_interactive]{plot_edish_interactive()}} for an interactive \code{plotly} version with
+subject-level hover details (peak dates and directed peak gaps).
+}
 \examples{
 data <- make_synthetic_hyslaw_data(n_extra = 0L, seed = 1L)
 plot_edish(data$ADSL, data$ADLB)

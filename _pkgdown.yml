@@ -29,6 +29,7 @@ reference:
   - title: Plots
     contents:
       - plot_edish
+      - plot_edish_interactive
   - title: Teal Modules
     contents:
       - tm_g_edish
