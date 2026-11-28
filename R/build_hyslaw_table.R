@@ -400,7 +400,6 @@ a_liver_elevation_counts <- function(df,
 
   add_cuts <- function(items, header, values, cuts, indent_header = 1L) {
     items[[length(items) + 1L]] <- row_cut(header, NULL, indent_header)
-    items[[length(items)]]$val <- rtables::rcell(NULL)
     for (cut in cuts) {
       n <- sum(meets_cut(values, cut, classified$compare %||% ">="))
       items[[length(items) + 1L]] <- row_cut(

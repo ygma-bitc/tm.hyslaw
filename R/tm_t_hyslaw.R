@@ -8,41 +8,42 @@ build_hyslaw_code_text <- function(adsl_name,
                                    compare,
                                    show_total,
                                    table_which) {
+  show_total_txt <- if (isTRUE(show_total)) "TRUE" else "FALSE"
   tbl_call <- if (identical(table_which, "elevation")) {
     paste(
       "tm.hyslaw::build_liver_elevation_table(",
       "  classified = classified,",
-      sprintf("  show_total = %s", if (isTRUE(show_total)) "TRUE" else "FALSE"),
+      sprintf("  show_total = %s", show_total_txt),
       ")",
       sep = "\n"
     )
   } else if (identical(table_which, "both")) {
     paste(
       "tm.hyslaw::build_hyslaw_table(classified = classified,",
-      sprintf("  show_total = %s)", if (isTRUE(show_total)) "TRUE" else "FALSE"),
+      sprintf("  show_total = %s)", show_total_txt),
       "tm.hyslaw::build_liver_elevation_table(classified = classified,",
-      sprintf("  show_total = %s)", if (isTRUE(show_total)) "TRUE" else "FALSE"),
+      sprintf("  show_total = %s)", show_total_txt),
       sep = "\n"
     )
   } else {
     paste(
       "tm.hyslaw::build_hyslaw_table(",
       "  classified = classified,",
-      sprintf("  show_total = %s", if (isTRUE(show_total)) "TRUE" else "FALSE"),
+      sprintf("  show_total = %s", show_total_txt),
       ")",
       sep = "\n"
     )
   }
   paste(
-    sprintf("classified <- tm.hyslaw::classify_hyslaw("),
-    sprintf("  adsl = %s,", adsl_name),
-    sprintf("  adlb = %s,", adlb_name),
-    sprintf("  arm_var = %s,", deparse(arm_var)),
-    sprintf("  population_var = %s,", deparse(population_var)),
-    sprintf("  window_days = %s,", deparse(window_days)),
-    sprintf("  exclude_alp = %s,", deparse(exclude_alp)),
-    sprintf("  compare = %s", deparse(compare)),
-    ")",
+    format_classify_code(
+      adsl_name = adsl_name,
+      adlb_name = adlb_name,
+      arm_var = arm_var,
+      population_var = population_var,
+      window_days = window_days,
+      exclude_alp = exclude_alp,
+      compare = compare
+    ),
     tbl_call,
     sep = "\n"
   )

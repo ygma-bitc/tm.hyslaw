@@ -380,3 +380,29 @@ selected_column_name <- function(resolved) {
   }
   as.character(unname(selected[[1L]]))
 }
+
+
+#' Shared "Show R Code" text for classify_hyslaw().
+#'
+#' @keywords internal
+#' @noRd
+format_classify_code <- function(adsl_name,
+                                 adlb_name,
+                                 arm_var,
+                                 population_var,
+                                 window_days,
+                                 exclude_alp,
+                                 compare) {
+  paste(
+    sprintf("classified <- tm.hyslaw::classify_hyslaw("),
+    sprintf("  adsl = %s,", adsl_name),
+    sprintf("  adlb = %s,", adlb_name),
+    sprintf("  arm_var = %s,", deparse(arm_var)),
+    sprintf("  population_var = %s,", deparse(population_var)),
+    sprintf("  window_days = %s,", deparse(window_days)),
+    sprintf("  exclude_alp = %s,", deparse(exclude_alp)),
+    sprintf("  compare = %s", deparse(compare)),
+    ")",
+    sep = "\n"
+  )
+}

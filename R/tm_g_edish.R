@@ -1,4 +1,28 @@
 #' @keywords internal
+format_edish_plot_call <- function(fun_name,
+                                   comment_prefix,
+                                   which,
+                                   color_by,
+                                   log_axes,
+                                   facet,
+                                   annotate_quadrants,
+                                   mark_potential) {
+  paste(
+    sprintf("%stm.hyslaw::%s(", comment_prefix, fun_name),
+    sprintf("%s  classified = classified,", comment_prefix),
+    sprintf("%s  which = %s,", comment_prefix, deparse(which)),
+    sprintf("%s  color_by = %s,", comment_prefix, deparse(color_by)),
+    sprintf("%s  log_axes = %s,", comment_prefix, deparse(log_axes)),
+    sprintf("%s  facet = %s,", comment_prefix, deparse(facet)),
+    sprintf("%s  annotate_quadrants = %s,", comment_prefix, deparse(annotate_quadrants)),
+    sprintf("%s  mark_potential = %s", comment_prefix, deparse(mark_potential)),
+    sprintf("%s)", comment_prefix),
+    sep = "\n"
+  )
+}
+
+
+#' @keywords internal
 build_edish_code_text <- function(adsl_name,
                                   adlb_name,
                                   arm_var,
@@ -13,24 +37,36 @@ build_edish_code_text <- function(adsl_name,
                                   annotate_quadrants,
                                   mark_potential) {
   paste(
-    sprintf("classified <- tm.hyslaw::classify_hyslaw("),
-    sprintf("  adsl = %s,", adsl_name),
-    sprintf("  adlb = %s,", adlb_name),
-    sprintf("  arm_var = %s,", deparse(arm_var)),
-    sprintf("  population_var = %s,", deparse(population_var)),
-    sprintf("  window_days = %s,", deparse(window_days)),
-    sprintf("  exclude_alp = %s,", deparse(exclude_alp)),
-    sprintf("  compare = %s", deparse(compare)),
-    ")",
-    "tm.hyslaw::plot_edish(",
-    "  classified = classified,",
-    sprintf("  which = %s,", deparse(which)),
-    sprintf("  color_by = %s,", deparse(color_by)),
-    sprintf("  log_axes = %s,", deparse(log_axes)),
-    sprintf("  facet = %s,", deparse(facet)),
-    sprintf("  annotate_quadrants = %s,", deparse(annotate_quadrants)),
-    sprintf("  mark_potential = %s", deparse(mark_potential)),
-    ")",
+    format_classify_code(
+      adsl_name = adsl_name,
+      adlb_name = adlb_name,
+      arm_var = arm_var,
+      population_var = population_var,
+      window_days = window_days,
+      exclude_alp = exclude_alp,
+      compare = compare
+    ),
+    format_edish_plot_call(
+      fun_name = "plot_edish_interactive",
+      comment_prefix = "",
+      which = which,
+      color_by = color_by,
+      log_axes = log_axes,
+      facet = facet,
+      annotate_quadrants = annotate_quadrants,
+      mark_potential = mark_potential
+    ),
+    "# Static ggplot2 figure for scripts or reports:",
+    format_edish_plot_call(
+      fun_name = "plot_edish",
+      comment_prefix = "# ",
+      which = which,
+      color_by = color_by,
+      log_axes = log_axes,
+      facet = facet,
+      annotate_quadrants = annotate_quadrants,
+      mark_potential = mark_potential
+    ),
     sep = "\n"
   )
 }
@@ -44,7 +80,8 @@ ui_g_edish <- function(id, ...) {
     shinyjs::useShinyjs(),
     teal.widgets::standard_layout(
       output = teal.widgets::white_small_well(
-        shiny::plotOutput(ns("edish_plot"), height = "620px")
+        plotly::plotlyOutput(ns("edish_plot"), height = "560px"),
+        shiny::uiOutput(ns("edish_caption"))
       ),
       encoding = shiny::tags$div(
         shiny::tags$label("Encodings", class = "text-primary"),
@@ -219,8 +256,49 @@ srv_g_edish <- function(id,
       )
     })
 
-    output$edish_plot <- shiny::renderPlot({
-      plot_r()
+    plotly_r <- shiny::reactive({
+      shiny::validate(shiny::need(!no_data_r(), "No laboratory records available."))
+      plot_edish_interactive(
+        classified = classified_r(),
+        which = input$which %||% which,
+        color_by = input$color_by %||% color_by,
+        log_axes = isTRUE(input$log_axes),
+        facet = isTRUE(input$facet),
+        annotate_quadrants = isTRUE(input$annotate_quadrants),
+        mark_potential = isTRUE(input$mark_potential),
+        show_caption = FALSE
+      )
+    })
+
+    caption_r <- shiny::reactive({
+      if (isTRUE(no_data_r())) {
+        return(NULL)
+      }
+      cur_which <- input$which %||% which
+      classified <- classified_r()
+      axes <- plot_axis_spec(cur_which, classified)
+      plot_edish_caption(cur_which, classified, axes, isTRUE(input$mark_potential))
+    })
+
+    output$edish_plot <- plotly::renderPlotly({
+      plotly_r()
+    })
+
+    output$edish_caption <- shiny::renderUI({
+      cap <- caption_r()
+      if (is.null(cap)) {
+        return(NULL)
+      }
+      shiny::tags$div(
+        style = paste(
+          "margin-top: 8px;",
+          "font-size: 12px;",
+          "color: #4D4D4D;",
+          "line-height: 1.45;",
+          "white-space: pre-line;"
+        ),
+        cap
+      )
     })
 
     source_code_r <- shiny::reactive({
@@ -247,7 +325,7 @@ srv_g_edish <- function(id,
       title = "eDISH - R Code"
     )
 
-    list(plot = plot_r, classified = classified_r, no_data = no_data_r)
+    list(plot = plot_r, plotly = plotly_r, caption = caption_r, classified = classified_r, no_data = no_data_r)
   })
 }
 

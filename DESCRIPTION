@@ -1,7 +1,7 @@
 Package: tm.hyslaw
 Title: 'teal' Modules for Hy's Law Monitoring and Evaluation of Drug-Induced
     Serious Hepatotoxicity (eDISH) Plots
-Version: 0.2.0
+Version: 0.2.0.9000
 Authors@R: person("Yaoguang", "Ma",
     email = "ygma0929@gmail.com",
     role = c("aut", "cre"))
@@ -34,6 +34,7 @@ Imports:
     dplyr (>= 1.0.5),
     ggplot2 (>= 3.4.0),
     lifecycle (>= 1.0.0),
+    plotly (>= 4.10.0),
     rlang (>= 1.0.0),
     rtables (>= 0.6.0),
     shiny (>= 1.7.0),

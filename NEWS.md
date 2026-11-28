@@ -1,5 +1,6 @@
 # tm.hyslaw (development version)
 
+* Added `plot_edish_interactive()` (`plotly` scatter with subject-level hover showing peak values, peak dates, directed `BILI - ALT/AST` / `BILI - ALP` peak gaps, concurrent/ALP flags, and R-ratio) and updated `tm_g_edish()` to render interactive hoverable plots with a standalone caption below the plot. `plot_edish()` continues to return a static `ggplot`.
 * eDISH log axes tick at powers of ten with plain labels (`0.1`, `1`, `10`), and the reproducible code includes `log_axes`.
 
 # tm.hyslaw 0.2.0
