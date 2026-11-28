@@ -78,6 +78,13 @@ plot_edish(
 
 A `ggplot` object.
 
+## Details
+
+Use
+[`plot_edish_interactive()`](https://ygma-bitc.github.io/tm.hyslaw/reference/plot_edish_interactive.md)
+for an interactive `plotly` version with subject-level hover details
+(peak dates and directed peak gaps).
+
 ## Examples
 
 ``` r

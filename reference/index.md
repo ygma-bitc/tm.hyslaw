@@ -33,6 +33,9 @@
 
 - [`plot_edish()`](https://ygma-bitc.github.io/tm.hyslaw/reference/plot_edish.md)
   : Liver-injury screening scatter (eDISH / mDISH / cholestatic)
+- [`plot_edish_interactive()`](https://ygma-bitc.github.io/tm.hyslaw/reference/plot_edish_interactive.md)
+  : Interactive liver-injury screening scatter (eDISH / mDISH /
+  cholestatic)
 
 ## Teal Modules
 

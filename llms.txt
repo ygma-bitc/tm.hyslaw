@@ -61,6 +61,7 @@ classified <- classify_hyslaw(data$ADSL, data$ADLB)
 build_hyslaw_table(classified = classified)
 build_liver_elevation_table(classified = classified)
 plot_edish(classified = classified)
+plot_edish_interactive(classified = classified)
 plot_edish(classified = classified, which = "mdish")
 plot_edish(classified = classified, which = "cholestatic")
 hyslaw_listing(classified = classified)
@@ -214,6 +215,9 @@ Coverage is intentionally not a release gate for this early package.
 
 - [`plot_edish()`](https://ygma-bitc.github.io/tm.hyslaw/reference/plot_edish.md)
   : Liver-injury screening scatter (eDISH / mDISH / cholestatic)
+- [`plot_edish_interactive()`](https://ygma-bitc.github.io/tm.hyslaw/reference/plot_edish_interactive.md)
+  : Interactive liver-injury screening scatter (eDISH / mDISH /
+  cholestatic)
 
 ## Teal Modules
 
